@@ -109,7 +109,7 @@
 
 <script>
 let nomes = [], historico = [], jogoAtual = null;
-const jogosNeg = ["Vazas", "Copas", "Damas", "Reis e Valetes", "Rei Copas", "2 Últimas"];
+const jogosNeg = ["Vazas (20)", "Copas (20)", "Damas (50)", "Reis e Valetes (30)", "Rei Copas (160)", "2 Últimas (90)"];
 const pontosPositivos = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650];
 
 // PWA Variables
@@ -189,7 +189,7 @@ function iniciarJogo(carregado = null) {
   }
 
   criarTabela("negTable", jogosNeg, false, carregado?.neg || []);
-  criarTabela("posTable", ["1º jogo", "2º jogo", "3º jogo", "4º jogo"], true, carregado?.pos || []);
+  criarTabela("posTable", ["1º jogo (25)", "2º jogo (25)", "3º jogo (25)", "4º jogo (25)"], true, carregado?.pos || []);
   criarTabelaFinal();
   jogoAtual = carregado || null;
 }
