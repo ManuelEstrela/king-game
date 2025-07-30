@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>King</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#2196F3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="King Game">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIktpbmcgR2FtZSIsCiAgInNob3J0X25hbWUiOiAiS2luZyIsCiAgImRlc2NyaXB0aW9uIjogIkpvZ28gZGUgY2FydGFzIEtpbmciLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgInRoZW1lX2NvbG9yIjogIiMyMTk2RjMiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhZMmx5WTJ4bElHTjRQU0kyTUNJZ1kza2lQU0kyTUNJZ2NqMGlOVEFpSUdacGJHdzlJaU16TlRreE5qRWlMejQ4ZEdWNGRDQjRQU0kyTUNJZ2VUMGlOekFpSUhSbGVIUXRZVzVqYUc5eVBTSnRhV1JrYkdVaUlHWnBiR3c5SW1acGJHeGNZU0lnWm05dWRDMXphWHBsUFNJeU5DSStTeUF2UGp3dmRHVjRkRDQ4TDNOMlp6NGlMQ0FpYzJsNlpYTWlPaUFpTVRJd2VERXlNQ0FpTGlBaWRIbHdaU0k2SUNJUG5CdlpXa2lJbjBnWVE9PSIsCiAgICAgICJzaXplcyI6ICIxMjB4MTIwIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0l4T1RJaUlHaGxhV2RvZEQwaU1Ua3lJajQ4WTJseVkyeGxJR040UFNJNU5pSWdZM2s5SWpreVVqMGlPVEFpSUdacGJHdzlJaU16TlRreE5qRWlMejQ4ZEdWNGRDQjRQU0k1TmlJZ2VUMGlNVEF5SWlCMFpYaDBMV0Z1WTJodmNqMGliV2xrWkd4bElpQm1hV3hzUFNKbWFXeHNYR0VpSUdadmJuUXRjMmw2WlQwaU16SWlQa3NnTHo0OEwzUmxlSFErUEM5emRtYysiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+  
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; }
+    th, td { padding: 5px; text-align: center; }
+    .hidden { display: none; }
+    .section { margin-bottom: 20px; }
+    input[type="number"] { width: 60px; }
+    
+    /* PWA Install prompt styles */
+    .install-prompt {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: #2196F3;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: none;
+    }
+    .install-prompt button {
+      background: white;
+      color: #2196F3;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PWA Install Prompt -->
+<div id="installPrompt" class="install-prompt">
+  <p>📱 Instalar King Game no seu dispositivo?</p>
+  <button onclick="installApp()">Instalar</button>
+  <button onclick="dismissInstall()">Mais tarde</button>
+</div>
+
+<div id="menu" class="section">
+  <h1>King</h1>
+  <button onclick="mostrarForm()">Jogar</button>
+  <button onclick="mostrarHistorico()">Ver Histórico</button>
+</div>
+
+<div id="formNomes" class="section hidden">
+  <h2>Inserir Nomes</h2>
+  <input id="j1" placeholder="Jogador 1">
+  <input id="j2" placeholder="Jogador 2">
+  <input id="j3" placeholder="Jogador 3">
+  <input id="j4" placeholder="Jogador 4">
+  <button onclick="iniciarJogo()">Começar</button>
+</div>
+
+<div id="jogo" class="hidden">
+  <div class="section" id="negativos">
+    <h2>Jogos Negativos</h2>
+    <table id="negTable"><thead></thead><tbody></tbody><tfoot></tfoot></table>
+    <button onclick="verificarNegativos()">Verificar Jogos Negativos</button>
+    <p id="verificacaoMsg"></p>
+  </div>
+
+  <div class="section" id="positivos">
+    <h2>Jogos Positivos</h2>
+    <table id="posTable"><thead></thead><tbody></tbody><tfoot></tfoot></table>
+    <button onclick="verificarPositivos()">Verificar Jogos Positivos</button>
+    <p id="verificacaoPosMsg"></p>
+  </div>
+
+  <div class="section">
+    <h2>Total Final</h2>
+    <table id="finalTable"><thead></thead><tbody></tbody><tfoot></tfoot></table>
+    <button onclick="acabarJogo()">Acabar Jogo</button>
+    <button onclick="voltarMenu()">Menu</button>
+  </div>
+</div>
+
+<div id="resultados" class="hidden">
+  <h2>🏆 Classificação Final</h2>
+  <div id="rankingFinal"></div>
+  <button onclick="voltarMenu()">Menu</button>
+  <button onclick="mostrarHistorico()">Ver Histórico</button>
+</div>
+
+<div id="historico" class="hidden">
+  <h2>Histórico de Jogos</h2>
+  <ul id="historicoLista"></ul>
+  <button onclick="voltarMenu()">Menu</button>
+</div>
+
+<script>
+let nomes = [], historico = [], jogoAtual = null;
+const jogosNeg = ["Vazas", "Copas", "Damas", "Reis e Valetes", "Rei Copas", "2 Últimas"];
+const pontosPositivos = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650];
+
+// PWA Variables
+let deferredPrompt;
+
+// Correct totals for each negative game
+const totaisNegativos = {
+  "Vazas": 260,
+  "Copas": 260, 
+  "Damas": 200,
+  "Reis e Valetes": 240,
+  "Rei Copas": 160,
+  "2 Últimas": 180
+};
+
+// PWA Service Worker Registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('data:application/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdraW5nLWdhbWUtdjEnOwpjb25zdCB1cmxzVG9DYWNoZSA9IFsKICAnLycKXTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignaW5zdGFsbCcsIChldmVudCkgPT4gewogIGV2ZW50LndhaXRVbnRpbCgKICAgIGNhY2hlcy5vcGVuKENBQ0hFX05BTUUpCiAgICAgIC50aGVuKChjYWNoZSkgPT4gewogICAgICAgIHJldHVybiBjYWNoZS5hZGRBbGwodXJsc1RvQ2FjaGUpOwogICAgICB9KQogICk7Cn0pOwoKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIChldmVudCkgPT4gewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpCiAgICAgIC50aGVuKChyZXNwb25zZSkgPT4gewogICAgICAgIGlmIChyZXNwb25zZSkgewogICAgICAgICAgcmV0dXJuIHJlc3BvbnNlOwogICAgICAgIH0KICAgICAgICByZXR1cm4gZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICAgIH0pCiAgKTsKfSk7')
+      .then((registration) => {
+        console.log('SW registered: ', registration);
+      })
+      .catch((registrationError) => {
+        console.log('SW registration failed: ', registrationError);
+      });
+  });
+}
+
+// PWA Install Prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installPrompt').style.display = 'block';
+});
+
+function installApp() {
+  document.getElementById('installPrompt').style.display = 'none';
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      deferredPrompt = null;
+    });
+  }
+}
+
+function dismissInstall() {
+  document.getElementById('installPrompt').style.display = 'none';
+}
+
+// Load saved data from localStorage on page load
+window.addEventListener('load', () => {
+  const savedHistorico = localStorage.getItem('kingGameHistorico');
+  if (savedHistorico) {
+    historico = JSON.parse(savedHistorico);
+  }
+});
+
+// Save data to localStorage whenever historico changes
+function saveData() {
+  localStorage.setItem('kingGameHistorico', JSON.stringify(historico));
+}
+
+function mostrarForm() {
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("formNomes").classList.remove("hidden");
+}
+
+function iniciarJogo(carregado = null) {
+  document.getElementById("formNomes").classList.add("hidden");
+  document.getElementById("jogo").classList.remove("hidden");
+
+  nomes = [j1.value, j2.value, j3.value, j4.value];
+
+  if (carregado) {
+    nomes = carregado.nomes;
+    [j1.value, j2.value, j3.value, j4.value] = nomes;
+  }
+
+  criarTabela("negTable", jogosNeg, false, carregado?.neg || []);
+  criarTabela("posTable", ["1º jogo", "2º jogo", "3º jogo", "4º jogo"], true, carregado?.pos || []);
+  criarTabelaFinal();
+  jogoAtual = carregado || null;
+}
+
+function criarTabela(id, linhas, positivo, dados = []) {
+  const table = document.getElementById(id);
+  const thead = table.querySelector("thead");
+  const tbody = table.querySelector("tbody");
+  const tfoot = table.querySelector("tfoot");
+  thead.innerHTML = "<tr><th>Jogo</th>" + nomes.map(n => `<th>${n}</th>`).join("") + "</tr>";
+  tbody.innerHTML = "";
+  linhas.forEach((jogo, i) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${jogo}</td>` + nomes.map((_, j) => {
+      const val = dados[i]?.[j] ?? "";
+      return `<td><input type="number" value="${val}" oninput="atualizarTotais('${id}', ${linhas.length}); atualizarTotalFinal();"></td>`;
+    }).join("");
+    tbody.appendChild(row);
+  });
+  atualizarTotais(id, linhas.length);
+}
+
+function atualizarTotais(id, numLinhas) {
+  const table = document.getElementById(id);
+  const tfoot = table.querySelector("tfoot");
+  tfoot.innerHTML = "<tr><th>Total</th>" + nomes.map((_, i) => {
+    let soma = 0;
+    for (let l = 0; l < numLinhas; l++) {
+      const val = Number(table.querySelector(`tbody tr:nth-child(${l + 1}) td:nth-child(${i + 2}) input`).value);
+      if (!isNaN(val)) soma += val;
+    }
+    return `<th>${soma}</th>`;
+  }).join("") + "</tr>";
+}
+
+function verificarNegativos() {
+  const table = document.getElementById("negTable").querySelector("tbody");
+  let msg = "";
+  
+  for (let i = 0; i < jogosNeg.length; i++) {
+    let total = 0;
+    for (let j = 0; j < 4; j++) {
+      const val = Number(table.rows[i].cells[j + 1].querySelector("input").value);
+      if (!isNaN(val)) total += val;
+    }
+    
+    const jogoNome = jogosNeg[i];
+    const totalEsperado = totaisNegativos[jogoNome];
+    
+    if (total !== totalEsperado) {
+      msg += `⚠️ ${jogoNome} devia somar ${totalEsperado}, tem ${total}\n`;
+    }
+  }
+  
+  document.getElementById("verificacaoMsg").textContent = msg || "✅ Tudo certo nos jogos negativos!";
+}
+
+function verificarPositivos() {
+  let msg = "";
+  const posTable = document.getElementById("posTable").querySelector("tbody");
+  
+  for (let i = 0; i < 4; i++) {
+    let totalLinha = 0;
+    for (let j = 0; j < 4; j++) {
+      const val = Number(posTable.rows[i].cells[j + 1].querySelector("input").value);
+      if (!isNaN(val)) totalLinha += val;
+    }
+    if (totalLinha !== 325) msg += `⚠️ ${i + 1}º jogo devia dar 325, tem ${totalLinha}\n`;
+  }
+  document.getElementById("verificacaoPosMsg").textContent = msg || "✅ Tudo certo nos jogos positivos!";
+}
+
+function criarTabelaFinal() {
+  const table = document.getElementById("finalTable");
+  const thead = table.querySelector("thead");
+  const tbody = table.querySelector("tbody");
+  
+  thead.innerHTML = "<tr><th></th>" + nomes.map(n => `<th>${n}</th>`).join("") + "</tr>";
+  
+  tbody.innerHTML = `
+    <tr><td><strong>Negativos</strong></td>${nomes.map(() => '<td>0</td>').join('')}</tr>
+    <tr><td><strong>Positivos</strong></td>${nomes.map(() => '<td>0</td>').join('')}</tr>
+    <tr><td><strong>Resultados</strong></td>${nomes.map(() => '<td>0</td>').join('')}</tr>
+  `;
+  
+  atualizarTotalFinal();
+}
+
+function atualizarTotalFinal() {
+  const finalTable = document.getElementById("finalTable");
+  if (!finalTable) return;
+  
+  const tbody = finalTable.querySelector("tbody");
+  
+  // Calculate negative totals
+  const negTable = document.getElementById("negTable");
+  if (negTable) {
+    for (let i = 0; i < 4; i++) {
+      let soma = 0;
+      for (let l = 0; l < jogosNeg.length; l++) {
+        const input = negTable.querySelector(`tbody tr:nth-child(${l + 1}) td:nth-child(${i + 2}) input`);
+        if (input) {
+          const val = Number(input.value);
+          if (!isNaN(val)) soma += val;
+        }
+      }
+      tbody.rows[0].cells[i + 1].textContent = soma;
+    }
+  }
+  
+  // Calculate positive totals
+  const posTable = document.getElementById("posTable");
+  if (posTable) {
+    for (let i = 0; i < 4; i++) {
+      let soma = 0;
+      for (let l = 0; l < 4; l++) {
+        const input = posTable.querySelector(`tbody tr:nth-child(${l + 1}) td:nth-child(${i + 2}) input`);
+        if (input) {
+          const val = Number(input.value);
+          if (!isNaN(val)) soma += val;
+        }
+      }
+      tbody.rows[1].cells[i + 1].textContent = soma;
+    }
+  }
+  
+  // Calculate final results (positivos - negativos)
+  for (let i = 0; i < 4; i++) {
+    const neg = Number(tbody.rows[0].cells[i + 1].textContent) || 0;
+    const pos = Number(tbody.rows[1].cells[i + 1].textContent) || 0;
+    tbody.rows[2].cells[i + 1].textContent = pos - neg;
+  }
+}
+
+function acabarJogo() {
+  const neg = Array.from(document.querySelectorAll("#negTable tbody tr")).map(row =>
+    Array.from(row.querySelectorAll("input")).map(input => {
+      const val = Number(input.value);
+      return isNaN(val) ? 0 : val;
+    })
+  );
+  const pos = Array.from(document.querySelectorAll("#posTable tbody tr")).map(row =>
+    Array.from(row.querySelectorAll("input")).map(input => {
+      const val = Number(input.value);
+      return isNaN(val) ? 0 : val;
+    })
+  );
+  
+  const total = nomes.map((_, i) => {
+    const negTotal = neg.reduce((a, b) => a + b[i], 0);
+    const posTotal = pos.reduce((a, b) => a + b[i], 0);
+    return posTotal - negTotal;
+  });
+  
+  // Create array with player names and scores, then sort by score (highest first)
+  const resultados = nomes.map((nome, i) => ({ nome, pontos: total[i] }))
+    .sort((a, b) => b.pontos - a.pontos);
+  
+  // Show results page
+  mostrarResultados(resultados);
+  
+  const vencedor = resultados[0].nome;
+  const dataHora = new Date().toLocaleString('pt-PT');
+  const obj = { nomes, neg, pos, total, vencedor, resultados, dataHora };
+  if (jogoAtual) historico[historico.indexOf(jogoAtual)] = obj;
+  else historico.push(obj);
+  
+  // Save to localStorage
+  saveData();
+}
+
+function mostrarResultados(resultados) {
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("formNomes").classList.add("hidden");
+  document.getElementById("jogo").classList.add("hidden");
+  document.getElementById("historico").classList.add("hidden");
+  document.getElementById("resultados").classList.remove("hidden");
+  
+  const rankingDiv = document.getElementById("rankingFinal");
+  let rankingHTML = "";
+  
+  resultados.forEach((jogador, index) => {
+    const posicao = index + 1;
+    const emoji = posicao === 1 ? "🥇" : posicao === 2 ? "🥈" : posicao === 3 ? "🥉" : "4️⃣";
+    rankingHTML += `<div style="font-size: 18px; margin: 10px 0; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
+      ${emoji} <strong>${posicao}º lugar: ${jogador.nome} - ${jogador.pontos} pontos</strong>
+    </div>`;
+  });
+  
+  rankingDiv.innerHTML = rankingHTML;
+}
+
+function mostrarHistorico() {
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("formNomes").classList.add("hidden");
+  document.getElementById("jogo").classList.add("hidden");
+  document.getElementById("historico").classList.remove("hidden");
+  const lista = document.getElementById("historicoLista");
+  lista.innerHTML = "";
+  historico.forEach((jogo, i) => {
+    const li = document.createElement("li");
+    const dataHora = jogo.dataHora || "Data não disponível";
+    li.innerHTML = `
+      <div style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        <div><strong>📅 ${dataHora}</strong></div>
+        <div>🏆 ${jogo.vencedor} venceu com ${Math.max(...jogo.total)} pontos</div>
+        <button onclick="iniciarJogo(historico[${i}])">Abrir Jogo</button>
+      </div>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function voltarMenu() {
+  document.getElementById("menu").classList.remove("hidden");
+  document.getElementById("formNomes").classList.add("hidden");
+  document.getElementById("jogo").classList.add("hidden");
+  document.getElementById("historico").classList.add("hidden");
+  document.getElementById("resultados").classList.add("hidden");
+}
+</script>
+</body>
+</html>
